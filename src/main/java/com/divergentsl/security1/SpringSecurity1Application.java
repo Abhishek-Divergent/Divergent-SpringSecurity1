@@ -22,7 +22,7 @@ public class SpringSecurity1Application {
 		connector.setScheme("http");
 		connector.setPort(8082);
 		connector.setSecure(false);
-		connector.setRedirectPort(8443);
+		connector.setRedirectPort(8080);
 		return connector;
 	}
 

@@ -11,15 +11,18 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
+
+import com.divergentsl.security1.service.EmployeeService;
 
 @Configuration
 @EnableWebSecurity
 public class EmployeeSecurity extends WebSecurityConfigurerAdapter {
 
-	
 //	@Bean
 //	public UserDetailsService userDetailsService(DataSource dataSource) {
 //		return new JdbcUserDetailsManager(dataSource);
@@ -28,60 +31,57 @@ public class EmployeeSecurity extends WebSecurityConfigurerAdapter {
 	// Overriding password encoder
 
 	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return NoOpPasswordEncoder.getInstance();
+	PasswordEncoder passwordEncoder() {
+		// return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+		return new BCryptPasswordEncoder();
 	}
 
-	
-	
-	
-	
-	
+//	@Bean
+//	public PasswordEncoder passwordEncoder() {
+//		return NoOpPasswordEncoder.getInstance();
+//	}
+
 //	@Autowired
 //	UserDetailsService detailsService;
 //
 //	@Bean
 //	AuthenticationProvider authenticationProvider() {
 //		DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-//		daoAuthenticationProvider.setUserDetailsService(detailsService);
-//		daoAuthenticationProvider.setPasswordEncoder(NoOpPasswordEncoder.getInstance());
+//		daoAuthenticationProvider.setUserDetailsService(employeeService);
+//		daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
 //		return daoAuthenticationProvider;
 //	}
-//		
+////		
 //	
-	
-		//	@Bean
-		//	public UserDetailsService userDetailsService() {
-		//
-		//		InMemoryUserDetailsManager detailsManager = new InMemoryUserDetailsManager();
-		//
-		//		UserDetails details = User.withDefaultPasswordEncoder().username("root").password("root").authorities("read")
-		//				.build();
-		//		detailsManager.createUser(details);
-		//		return detailsManager;
-		//
-		//	}
-		
-	
-	
-	
-	
-	
+
+	// @Bean
+	// public UserDetailsService userDetailsService() {
+	//
+	// InMemoryUserDetailsManager detailsManager = new InMemoryUserDetailsManager();
+	//
+	// UserDetails details =
+	// User.withDefaultPasswordEncoder().username("root").password("root").authorities("read")
+	// .build();
+	// detailsManager.createUser(details);
+	// return detailsManager;
+	//
+	// }
+
 	// Authorization configuration
-		@Override
-		protected void configure(HttpSecurity http) throws Exception {
-			// using basic authentication
-			http.httpBasic();
-			// All the request require authentication because anyRequest() is used
-			 http.authorizeRequests().anyRequest().authenticated();
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		// using basic authentication
+		http.httpBasic();
+		// All the request require authentication because anyRequest() is used
+		// http.authorizeRequests().anyRequest().authenticated();
 
-			// Giving access to a particular url/resource to a use with particular authority
-			//http.authorizeRequests().antMatchers("/hello").hasAnyAuthority("read");
+		// Giving access to a particular url/resource to a use with particular authority
+//	     http.authorizeRequests().antMatchers("/hello").hasAnyAuthority("read");
+//	     http.authorizeRequests().antMatchers("/create").hasAnyAuthority("write");
+		// http.cors().and().csrf().disable();
+		// None of the requests need to be authenticated.
+		// http.authorizeRequests().anyRequest().permitAll();
 
-			// None of the requests need to be authenticated.
-		    //http.authorizeRequests().anyRequest().permitAll();
+	}
 
-		}
-
-	
 }
